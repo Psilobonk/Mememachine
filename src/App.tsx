@@ -1,122 +1,246 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import './App.css'
+import { useState } from "react";
 
-function App() {
-  const [count, setCount] = useState(0)
+const coins = [
+  "BONK",
+  "FARTCOIN",
+  "TROLL",
+  "ASTEROID",
+  "BITCOIN MINER",
+  "PEPE",
+  "MOG",
+  "SHIBA",
+  "TURBO",
+  "WOJAK",
+  "DOGE",
+  "BABYDOGE",
+  "FLOKI",
+  "CHEEMS",
+  "BANANAS31",
+  "JEFF",
+  "PIP",
+  "PURR",
+  "BASED",
+  "SCHITZO",
+];
+
+export default function App() {
+  const [selected, setSelected] = useState<string[]>([]);
+  const [captain, setCaptain] = useState<string | null>(null);
+
+  function toggleCoin(coin: string) {
+    if (selected.includes(coin)) {
+      setSelected(selected.filter((c) => c !== coin));
+
+      if (captain === coin) {
+        setCaptain(null);
+      }
+
+      return;
+    }
+
+    if (selected.length >= 5) return;
+
+    setSelected([...selected, coin]);
+  }
 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.tsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
+    <div
+      style={{
+        background: "#050505",
+        minHeight: "100vh",
+        color: "white",
+        padding: "20px",
+        fontFamily: "Arial",
+      }}
+    >
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          marginBottom: "30px",
+        }}
+      >
+        <h1
+          style={{
+            fontSize: "32px",
+            fontWeight: "bold",
+          }}
         >
-          Count is {count}
+          MEMEMACHINE
+        </h1>
+
+        <div
+          style={{
+            background: "#111",
+            padding: "10px 16px",
+            borderRadius: "12px",
+          }}
+        >
+          SEASON 1
+        </div>
+      </div>
+
+      <div
+        style={{
+          background: "#111",
+          borderRadius: "24px",
+          padding: "24px",
+          marginBottom: "24px",
+        }}
+      >
+        <h2
+          style={{
+            fontSize: "40px",
+            marginBottom: "10px",
+          }}
+        >
+          Pick Your 5
+        </h2>
+
+        <p
+          style={{
+            opacity: 0.7,
+            lineHeight: 1.6,
+          }}
+        >
+          Select 5 memecoins for this week's tournament.
+        </p>
+      </div>
+
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(2, 1fr)",
+          gap: "14px",
+          marginBottom: "30px",
+        }}
+      >
+        {coins.map((coin) => {
+          const active = selected.includes(coin);
+          const isCaptain = captain === coin;
+
+          return (
+            <div
+              key={coin}
+              onClick={() => toggleCoin(coin)}
+              style={{
+                background: active ? "#f7931a" : "#111",
+                borderRadius: "18px",
+                padding: "18px",
+                cursor: "pointer",
+                transition: "0.2s",
+              }}
+            >
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                }}
+              >
+                <div>
+                  <div
+                    style={{
+                      fontWeight: "bold",
+                      marginBottom: "6px",
+                    }}
+                  >
+                    {coin}
+                  </div>
+
+                  <div
+                    style={{
+                      opacity: 0.7,
+                      fontSize: "14px",
+                    }}
+                  >
+                    {active ? "Selected" : "Tap to Select"}
+                  </div>
+                </div>
+
+                {active && (
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setCaptain(coin);
+                    }}
+                    style={{
+                      background: isCaptain ? "gold" : "#222",
+                      color: isCaptain ? "black" : "white",
+                      border: "none",
+                      borderRadius: "12px",
+                      padding: "8px 12px",
+                      cursor: "pointer",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    ⭐
+                  </button>
+                )}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      <div
+        style={{
+          background: "#111",
+          borderRadius: "24px",
+          padding: "24px",
+        }}
+      >
+        <h3
+          style={{
+            marginBottom: "12px",
+            fontSize: "24px",
+          }}
+        >
+          Your Lineup
+        </h3>
+
+        <div
+          style={{
+            display: "flex",
+            flexWrap: "wrap",
+            gap: "10px",
+            marginBottom: "20px",
+          }}
+        >
+          {selected.map((coin) => (
+            <div
+              key={coin}
+              style={{
+                background: captain === coin ? "gold" : "#222",
+                color: captain === coin ? "black" : "white",
+                padding: "10px 14px",
+                borderRadius: "12px",
+                fontWeight: "bold",
+              }}
+            >
+              {captain === coin ? "⭐ " : ""}
+              {coin}
+            </div>
+          ))}
+        </div>
+
+        <button
+          style={{
+            background: "#f7931a",
+            border: "none",
+            color: "white",
+            width: "100%",
+            padding: "18px",
+            borderRadius: "18px",
+            fontSize: "18px",
+            fontWeight: "bold",
+            cursor: "pointer",
+          }}
+        >
+          SAVE LINEUP
         </button>
-      </section>
-
-      <div className="ticks"></div>
-
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+      </div>
+    </div>
+  );
 }
-
-export default App
